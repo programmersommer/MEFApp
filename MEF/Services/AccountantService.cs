@@ -1,8 +1,6 @@
 ﻿using MEFApp.Interfaces;
 using MEFBaseLibrary;
 using Microsoft.AspNetCore.Hosting;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Composition.Hosting;
 using System.IO;
 using System.Linq;
@@ -20,18 +18,16 @@ namespace MEFApp.Services
         public AccountantService(IWebHostEnvironment env)
         {
             _env = env;
-            ComposeDoesNotWork();
+            Compose();
         }
 
-        private void ComposeOptionOne()
+        private void Compose()
         {
             var pluginAssemblies = Directory.GetFiles(Path.Combine(_env.ContentRootPath, "plugins"), "*.dll", SearchOption.TopDirectoryOnly)
                 .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath)
-                .Where(s => s.GetTypes().Where(p => typeof(ICalculateVAT).IsAssignableFrom(p)).Any());
+                .Where(s => s.GetTypes().Any(p => typeof(ICalculateVAT).IsAssignableFrom(p)));
 
-            var configuration = new ContainerConfiguration()
-                            .WithAssemblies(pluginAssemblies);
-
+            var configuration = new ContainerConfiguration().WithAssemblies(pluginAssemblies);
 
             using (var container = configuration.CreateContainer())
             {
@@ -39,13 +35,6 @@ namespace MEFApp.Services
             }
         }
 
-        private void ComposeDoesNotWork()
-        {
-            var pluginsCatalog = new DirectoryCatalog(Path.Combine(_env.ContentRootPath, "plugins"));
-
-            var container = new CompositionContainer(pluginsCatalog);
-            container.ComposeParts(this);
-        }
 
         public decimal CalcVat(decimal amount)
         {

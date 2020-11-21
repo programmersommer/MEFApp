@@ -4,7 +4,7 @@ using System.Composition;
 namespace MEFBaseLibrary
 {
     [Export(typeof(ICalculateVAT))]
-    public class CalculateVAT : ICalculateVAT
+    public class CalculateVat : ICalculateVAT
     {
         public decimal CalcVAT(decimal amount)
         {

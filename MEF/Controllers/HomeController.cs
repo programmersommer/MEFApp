@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MEF.Models;
+﻿using MEF.Models;
 using MEFApp.Interfaces;
 using MEFApp.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace MEF.Controllers
 {
@@ -24,7 +24,7 @@ namespace MEF.Controllers
             {
                 VAT = _accountantService.CalcVat(100)
             };
-            
+
             return View(model);
         }
 

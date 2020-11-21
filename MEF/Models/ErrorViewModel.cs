@@ -1,5 +1,3 @@
-using System;
-
 namespace MEF.Models
 {
     public class ErrorViewModel
